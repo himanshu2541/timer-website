@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Timer Page</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            background: #000300;
+        }
+
+        #container{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+      #timer {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 10px solid #ccc;
+        display: flex;
+        align-items: flex-start;;
+        justify-content: center;
+        font-size: 48px;
+        font-weight: bold;
+      }
+
+      #hands{
+        display: inline-block;
+        width: 10px;
+        height: 100px;
+        background-color: red;
+      }
+
+      #input {
+        margin-top: 20px;
+        font-size: 24px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 100px;
+        text-align: center;
+        color: white;
+      }
+
+      #buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+
+      }
+
+      #start:hover{
+        background-color: rgb(85, 0, 0);
+      }
+      #pause:hover{
+        background: rgb(0, 152, 0);
+      }
+      #refresh{
+        margin: 10px 0px;
+      }
+
+      #refresh-btn:hover{
+        background: white;
+        color: black;
+      }
+
+      button {
+        font-size: 24px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin: 0 10px;
+        cursor: pointer;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+        <div id="timer">
+            <div id="hands"></div>
+        </div>
+        <input id="input" type="number" min="1" max="60" value="1" />
+        <div id="buttons">
+          <button id="start">Start</button>
+          <button id="pause">Pause</button>
+        </div>
+        <div id="refresh">
+            <a href="index.html">
+                <button id="refresh-btn" >Refresh</button>
+            </a>
+        </div>
+    </div>
+
+  </body>
+    <script>
+        // const hands= document.getElementById('hands');
+      const timer = document.getElementById("timer");
+      const input = document.getElementById("input");
+      const startButton = document.getElementById("start");
+      const pauseButton = document.getElementById("pause");
+      let intervalId = 0;
+      let seconds = 0;
+      let isPaused = false;
+    
+    //   timer.style.transform = `rotate(seconds * -6)`;
+
+
+
+      function startTimer() {
+        startButton.innerText = "Stop";
+        startButton.style.backgroundColor = "#f00";
+        startButton.style.color = "#fff";
+        // clearInterval(intervalId);
+        intervalId = setInterval(() => {
+          if (!isPaused && seconds!==0) {
+            seconds--;
+            const angle = (seconds * -6); // Calculate the angle of the seconds hand
+            timer.style.transition= '0s'
+            timer.style.transform = `rotate(${angle}deg)`; // Rotate the seconds hand
+            if(seconds===0){
+              clearInterval(intervalId);
+              startButton.innerText = "Start";
+              startButton.style.backgroundColor = "";
+              startButton.style.color = "";
+            //   timer.style.transform = "rotate(deg)";
+            //   timer.style.transition = '.2s';
+            //   new Audio("sounds/end.mp3").play(); // Play the end sound
+          }
+            }
+
+        }, 1000);
+      }
+
+      function pauseTimer() {
+        if (isPaused) {
+          pauseButton.innerText = "Pause";
+          pauseButton.style.backgroundColor = "";
+          pauseButton.style.color = "";
+          isPaused = false;
+        //   new Audio("sounds/resume.mp3").play(); // Play the resume sound
+        }
+        else {
+          pauseButton.innerText = "Resume";
+          pauseButton.style.backgroundColor = "#0f0";
+          pauseButton.style.color = "#fff";
+          isPaused = true;
+        //   new Audio("sounds/pause.mp3").play(); // Play the pause sound
+        }
+      }
+
+        
+      startButton.addEventListener("click", () => {
+        if (intervalId) {
+          clearInterval(intervalId);
+          startButton.innerText = "Start";
+          startButton.style.backgroundColor = "";
+          startButton.style.color = "";
+        //   timer.style.transform = "rotate(-90deg)";
+          seconds = 0;
+        } 
+        else {
+          seconds = input.value;
+          startTimer();
+        }
+    });
+
+
+    pauseButton.addEventListener("click", ()=>{
+        pauseTimer();
+    })
+
+</script>
+</html>
